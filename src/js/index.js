@@ -7,6 +7,7 @@ import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
 import Recipe from './models/Recipe';
 
+
 /* Global state of the app
 * - Search object
 * - Current recipe object
@@ -80,7 +81,7 @@ const controlRecipe = async () => {
             state.recipe.changeUnit();
             state.recipe.calcTime();
             state.recipe.calcServings();
-            console.log(state.recipe);
+            // console.log(state.recipe);
             cleanLoader();
             recipeView.renderRecipe(state.recipe);
             
@@ -91,4 +92,19 @@ const controlRecipe = async () => {
 }
 //controlRecipe();
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
+
+elements.recipePage.addEventListener('click', event => {
+    //console.log(event.target);
+    if (event.target.matches('.btn-dec, .btn-dec *')) {
+        if (state.recipe.servings > 1) {
+            state.recipe.updateCounts('dec')
+            recipeView.updateIngredient(state.recipe)
+        }
+    } else if (event.target.matches('.btn-inc, .btn-inc *')) {
+        state.recipe.updateCounts('inc')
+        recipeView.updateIngredient(state.recipe)
+    }
+    //console.log(state.recipe)
+})
+
 
